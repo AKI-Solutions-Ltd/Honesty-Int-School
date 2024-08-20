@@ -6,6 +6,99 @@
   src: url("../fonts/sas-webfontc56b.eot?51534236#iefix") format("embedded-opentype"), url("../fonts/sas-webfontc56b.woff2?51534236") format("woff2"), url("../fonts/sas-webfontc56b.woff?51534236") format("woff"), url("../fonts/sas-webfontc56b.ttf?51534236") format("truetype"), url("../fonts/sas-webfontc56b.svg?51534236#sas-webfont") format("svg");
   font-weight: normal;
   font-style: normal; }
+
+
+
+  .navbar-expand-lg .jk>img{
+    width: 2em !important;
+  }
+  .section{
+    display: grid !important;
+    grid-template-columns: 1fr,4fr,1fr !important;
+    grid-template-rows: auto;
+  }
+
+ .contact-main .content-wrap .container .row{
+  display: flex!important;
+  flex-direction: column;
+ }  
+
+ .col-sm-12>h2, .col-lg-3>h4 .info-text{
+  margin-left:-7em;
+ }
+
+
+
+.contact-form-container {
+
+    max-width: 400px;
+    margin: 50px auto;
+    margin-top: -21em;
+    margin-right: 0.5em;    
+    padding: 20px;
+    background-color: #29176E;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    
+}
+/* 
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #9ECAD5;
+} */
+
+form>input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom:1em;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+textarea{
+    resize: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color:#9ECAD5;
+    color: white;
+}
+
+ @media screen and (max-width: 996px) {
+  .contact-form-container{
+    margin-top: 5em;
+    margin-left: -1em;
+  }
+
+  .col-sm-12>h2, .col-lg-3>h4 .info-text{
+    margin-left:-3em;
+   }
+  
+  } 
+
+
+
+
 .sas {
   font-family: "sas-webfont";
   font-style: normal;
