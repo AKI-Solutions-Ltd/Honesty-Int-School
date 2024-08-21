@@ -90,7 +90,7 @@ button:hover {
     margin-left: -1em;
   }
 
-  .col-sm-12>h2, .col-lg-3>h4 .info-text{
+  .col-sm-12>.section-heading-2, .col-lg-3>h4 .info-text{
     margin-left:-3em;
    }
   
