@@ -79,7 +79,7 @@ textarea{
     cursor: pointer;
 }
 
-button:hover {
+.contact-form-container button:hover {
     background-color:#9ECAD5;
     color: white;
 }
