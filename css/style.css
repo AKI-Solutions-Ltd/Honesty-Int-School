@@ -23,7 +23,7 @@
   flex-direction: column;
  }  
 
- .col-sm-12>h2, .col-lg-3>h4 .info-text{
+ .col-sm-12>.section-heading-2, .col-lg-3>h4 .info-text{
   margin-left:-7em;
  }
 
@@ -41,7 +41,7 @@
     border-radius: 5px;
 }
 
-h2 {
+.section-heading-2 {
     text-align: center;
     margin-bottom: 20px;
     color: white;
