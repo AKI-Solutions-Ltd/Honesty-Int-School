@@ -46,25 +46,30 @@
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $phone = htmlspecialchars($_POST['phone']);
-    $message = htmlspecialchars($_POST['message']);
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+    $phone = htmlspecialchars(trim($_POST['phone']));
+    $message = htmlspecialchars(trim($_POST['message']));
     
-    $to = "tobilobamich4ilery@gmail.com";
-    $subject = "New Contact Form Submission";
-    $body = "Name: $name\nEmail: $email\nPhone: $phone\n\nMessage:\n$message";
-    $headers = "From: $email";
+    if ($name && $email && $phone && $message) {
+        $to = "tobilobamich4ilery@gmail.com";
+        $subject = "New Contact Form Submission";
+        $body = "Name: $name\nEmail: $email\nPhone: $phone\n\nMessage:\n$message";
+        $headers = "From: $email";
 
-    if (mail($to, $subject, $body, $headers)) {
-        echo "Thank you! Your message has been sent.";
+        if (mail($to, $subject, $body, $headers)) {
+            echo "Thank you! Your message has been sent.";
+        } else {
+            echo "Sorry, something went wrong. Please try again.";
+        }
     } else {
-        echo "Sorry, something went wrong. Please try again.";
+        echo "Please fill in all fields correctly.";
     }
 } else {
     echo "Invalid request.";
 }
 ?>
+
 
 <body>
 
