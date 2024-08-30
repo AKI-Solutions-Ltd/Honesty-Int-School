@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = test_input($_POST['message']);
     
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<div style="padding: 20px;text-align: center;background-color: red; color: white;">Invalid email format.</div>';
+		echo '<div id="messages" style="padding: 20px;text-align: center;background-color: red; color: white;">Invalid email format.</div>';
     }
     else if ($name && $email && $phone && $message) {
 
@@ -32,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail = new PHPMailer(true);
         $comment = "Honesty School Contact Form";
         
-        $recipient = 'honestyinternationalschool@gmail.com';
+        // $recipient = 'honestyinternationalschool@gmail.com';
+        $recipient = 'adigungodwin2@gmail.com';
         $bodyHtml = "
                 <html>
                 <head>
@@ -88,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $mail->Send();
         
-            echo '<div style="padding: 20px;text-align: center;background-color: green; color: white;">Thank you! Your message has been sent.</div>';
+			echo '<div id="messages" style="padding: 20px;text-align: center;background-color: green; color: white;">Thank you! Your message has been sent.</div>';
             // echo "Email sent successfully!!!!!!! New<br>"; 
         } catch (phpmailerException $e) {
             //echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
@@ -98,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     } else if (empty($name) || empty($email) || empty($phone) || empty($message)) {
-        echo '<div style="padding: 20px;text-align: center;background-color: red; color: white;">Please fill in all fields.</div>';
+		echo '<div id="messages" style="padding: 20px;text-align: center;background-color: red; color: white;">Please fill in all fields.</div>';
     }
 }
 
@@ -109,6 +110,15 @@ function test_input($data) {
     return $data;
   }
 ?>
+<!-- JavaScript to hide the message after 7 seconds -->
+<script>
+    setTimeout(function() {
+        var messageDiv = document.getElementById('messages');
+        if (messageDiv) {
+            messageDiv.style.display = 'none';
+        }
+    }, 7000); // 7000 milliseconds = 7 seconds
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -356,7 +366,7 @@ function test_input($data) {
 							<!-- <label for="message">Message:</label> -->
 							<textarea id="message" name="message" rows="4" placeholder="Message"required></textarea>
 							
-							<button type="submit" style="font-size: 1em;"><strong>Submit</strong></button>
+							<button type="submit" style="font-size: 1em;margin-top: 30px;"><strong>Submit</strong></button>
 						</form>
 					</div>
 				</div>
