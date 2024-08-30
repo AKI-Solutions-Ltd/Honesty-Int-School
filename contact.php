@@ -1,3 +1,125 @@
+<?php
+
+require 'vendor3/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = test_input($_POST['name']);
+    $email = test_input($_POST['email']);
+    $phone = test_input($_POST['phone']);
+    $message = test_input($_POST['message']);
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		echo '<div id="messages" style="padding: 20px;text-align: center;background-color: red; color: white;">Invalid email format.</div>';
+    }
+    else if ($name && $email && $phone && $message) {
+
+        $sender = 'info@eschool-ng.com';
+        $senderName = $name;
+        
+        
+        $usernameSmtp = 'AKIA2JXCZJ4RN7QL2DLB';
+        $passwordSmtp = 'BGpsi+zy33/jMceECOjtO1aj9twcqv8J/ARSXUHavBae';
+        
+        
+        $host = "email-smtp.us-east-1.amazonaws.com";
+        $port = 587;
+        
+        
+        $mail = new PHPMailer(true);
+        $comment = "Honesty School Contact Form";
+        
+        // $recipient = 'honestyinternationalschool@gmail.com';
+        $recipient = 'adigungodwin2@gmail.com';
+        $bodyHtml = "
+                <html>
+                <head>
+                    <title>Contact Form</title>
+                </head>
+                <body>
+                    <p>Name: $name</p>
+                    <p>Email: $email</p>
+                    <p>Phone: $phone</p>
+                    <p>Message: $message</p>
+                </body>
+                </html>
+            ";
+        $mail->Subject = "Honesty School Contact Form";
+        
+        // The HTML-formatted body of the email
+        $mail->Body = $bodyHtml;
+        $mail->isHTML(true);
+        $mail->AltBody    = $bodyHtml;
+        
+        // $ccRecipients = array( TO ADD EXTRA RECIPIENT EMAIL ADDRESSES, UNCOMMENT LINE 85-87
+        // );
+        
+        try {
+            // Specify the SMTP settings.
+            $mail->isSMTP();
+            $mail->Username   = $usernameSmtp;
+            $mail->Password   = $passwordSmtp;
+            $mail->Host       = $host;
+            $mail->Port       = $port;
+            $mail->SMTPAuth   = true;
+            $mail->SMTPSecure = 'tls';
+            $mail->Helo       = 'http://honestyschool.com.ng/';
+            // $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
+        
+        
+            // Specify the message recipients.
+            $mail->setFrom($sender, $senderName);
+            $mail->addAddress($recipient);
+            // You can also add CC, BCC, and additional To recipients here.
+            $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+        
+            
+            // foreach ($ccRecipients as $ccRecipient) {
+            //     $mail->addCC($ccRecipient);
+            // }
+            
+            $mail->Send();
+        
+			echo '<div id="messages" style="padding: 20px;text-align: center;background-color: green; color: white;">Thank you! Your message has been sent.</div>';
+            // echo "Email sent successfully!!!!!!! New<br>"; 
+        } catch (phpmailerException $e) {
+            //echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
+        } catch (Exception $e) {
+            // echo "Email can not be sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
+            // echo "Sorry, something went wrong. Please try again.";
+        }
+
+    } else if (empty($name) || empty($email) || empty($phone) || empty($message)) {
+		echo '<div id="messages" style="padding: 20px;text-align: center;background-color: red; color: white;">Please fill in all fields.</div>';
+    }
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+?>
+<!-- JavaScript to hide the message after 7 seconds -->
+<script>
+    setTimeout(function() {
+        var messageDiv = document.getElementById('messages');
+        if (messageDiv) {
+            messageDiv.style.display = 'none';
+        }
+    }, 7000); // 7000 milliseconds = 7 seconds
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,33 +165,6 @@
 
 	<script src='../../google_analytics_auto.html'></script>
 </head>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
-    $phone = htmlspecialchars(trim($_POST['phone']));
-    $message = htmlspecialchars(trim($_POST['message']));
-    
-    if ($name && $email && $phone && $message) {
-        $to = "tobilobamich4ilery@gmail.com";
-        $subject = "New Contact Form Submission";
-        $body = "Name: $name\nEmail: $email\nPhone: $phone\n\nMessage:\n$message";
-        $headers = "From: $email";
-
-        if (mail($to, $subject, $body, $headers)) {
-            echo "Thank you! Your message has been sent.";
-        } else {
-            echo "Sorry, something went wrong. Please try again.";
-        }
-    } else {
-        echo "Please fill in all fields correctly.";
-    }
-} else {
-    echo "Invalid request.";
-}
-?>
-
 
 <body>
 
@@ -200,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								<a class="nav-link" href="gallery.html">GALLERY</a>
 							</li>
 							<li class="nav-item active">
-								<a class="nav-link" href="contact.html">CONTACT US</a>
+								<a class="nav-link" href="contact.php">CONTACT US</a>
 							</li>
 						</ul>
 					</div>
@@ -259,7 +354,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 					<div class="contact-form-container">
 						<h2 style="font-size: 2em; color: white;">Send Us a Message</h2>
-						<form action="contact.php" method="post">
+						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 							<!-- <label for="name">Name:</label> -->
 							<input type="text" id="name" name="name" placeholder="Name"required>
 							<!-- <label for="email">Email:</label> -->
@@ -271,7 +366,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							<!-- <label for="message">Message:</label> -->
 							<textarea id="message" name="message" rows="4" placeholder="Message"required></textarea>
 							
-							<button type="submit" style="font-size: 1em;"><strong>Submit</strong></button>
+							<button type="submit" style="font-size: 1em;margin-top: 30px;"><strong>Submit</strong></button>
 						</form>
 					</div>
 				</div>
@@ -371,7 +466,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								<li><a href="admission.html" title="Admission">Admission</a></li>
 								<li><a href="academics.html" title="Academics">Academics</a></li>
 								<li><a href="gallery.html" title="Gallery">Gallery</a></li>
-								<li><a href="contact.html" title="Contact Us">Contact Us</a></li>
+								<li><a href="contact.php" title="Contact Us">Contact Us</a></li>
 							</ul>
 
 						</div>
@@ -424,6 +519,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-
-
-
