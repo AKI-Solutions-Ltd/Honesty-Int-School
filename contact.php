@@ -7,7 +7,7 @@
 
 <head>
 	<!-- Basic Page Needs
-    ================================================== -->
+	================================================== -->
 	<meta charset="utf-8">
 	<!--[if IE]><meta http-equiv="x-ua-compatible" content="IE=9" /><![endif]-->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,9 +19,9 @@
 	Favicons
 	=============================================== -->
 	<!-- <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png"> -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/site.webmanifest">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+	<link rel="manifest" href="favicon/site.webmanifest">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 	<!-- ==============================================
@@ -44,33 +44,6 @@
 	<script src='../../google_analytics_auto.html'></script>
 </head>
 
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
-    $phone = htmlspecialchars(trim($_POST['phone']));
-    $message = htmlspecialchars(trim($_POST['message']));
-    
-    if ($name && $email && $phone && $message) {
-        $to = "tobilobamich4ilery@gmail.com";
-        $subject = "New Contact Form Submission";
-        $body = "Name: $name\nEmail: $email\nPhone: $phone\n\nMessage:\n$message";
-        $headers = "From: $email";
-
-        if (mail($to, $subject, $body, $headers)) {
-            echo "Thank you! Your message has been sent.";
-        } else {
-            echo "Sorry, something went wrong. Please try again.";
-        }
-    } else {
-        echo "Please fill in all fields correctly.";
-    }
-} else {
-    echo "Invalid request.";
-}
-?>
-
-
 <body>
 
 	<!-- LOAD PAGE -->
@@ -91,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					<div class="col-sm-8 col-md-6">
 						<div class="info">
 							<div class="info-item">
-								<i class="fa fa-phone"></i> 
+								<i class="fa fa-phone"></i>
 								08023104996, 08171170770
 							</div>
 							<div class="info-item">
@@ -228,55 +201,83 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	</div>
 
 
-	<div class="contact-main" >
-			<div class="content-wrap">
-				<div class="container">
-					<div class="row" >
-						<div class="col-sm-12 col-md-12 col-lg-6">
-							<h2 class="section-heading-2" style="color:#29176E;">
-								For Enquiries:
-							</h2>
-							<br>
+	<div class="contact-main">
+		<div class="content-wrap">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 col-md-12 col-lg-6">
+						<h2 class="section-heading-2" style="color:#29176E;">
+							For Enquiries:
+						</h2>
+						<br>
 
-						</div>
-						<div class="col-lg-3">
-							<h4>Phone number: </h4>
-							<div class="info-text"> <span class="fa fa-phone info-icon"></span>  
-									08023104996, 08171170770
-							</div>
-
+					</div>
+					<div class="col-lg-3">
+						<h4>Phone number: </h4>
+						<div class="info-text"> <span class="fa fa-phone info-icon"></span>
+							08023104996, 08171170770
 						</div>
 
-						<div class="col-lg-3">
-							<h4>Address</h4>
-							<div class="info-text"> <span class="fa fa-phone info-icon"></span> 
-								School Address: <br> 
-								28, Chief Natufe Street, Bode Thomas.
-							</div>
-
-						</div>
 					</div>
 
-					<div class="contact-form-container">
-						<h2 style="font-size: 2em; color: white;">Send Us a Message</h2>
-						<form action="contact.php" method="post">
-							<!-- <label for="name">Name:</label> -->
-							<input type="text" id="name" name="name" placeholder="Name"required>
-							<!-- <label for="email">Email:</label> -->
-							<input type="email" id="email" name="email"placeholder="Email"required>
-							
-							<!-- <label for="phone">Phone:</label> -->
-							<input type="tel" id="phone" name="phone" placeholder="Phone"required>
-							
-							<!-- <label for="message">Message:</label> -->
-							<textarea id="message" name="message" rows="4" placeholder="Message"required></textarea>
-							
-							<button type="submit" style="font-size: 1em;"><strong>Submit</strong></button>
-						</form>
+					<div class="col-lg-3">
+						<h4>Address</h4>
+						<div class="info-text"> <span class="fa fa-phone info-icon"></span>
+							School Address: <br>
+							28, Chief Natufe Street, Bode Thomas.
+						</div>
+
 					</div>
+				</div>
+
+				<div class="contact-form-container">
+					<h2 style="font-size: 2em; color: white;">Send Us a Message</h2>
+					<?php
+					
+					$msg = "";
+					if (isset($_POST["submit"])) {
+						$name = htmlspecialchars(trim($_POST['name']));
+						$email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+						$phone = htmlspecialchars(trim($_POST['phone']));
+						$message = htmlspecialchars($_POST['message']);
+
+						if ($name && $email && $phone && $message) {
+							$to = "honestyinternationalschool@gmail.com";
+							$subject = "New Contact Form Submission";
+							$body = "Name: " . $name . "\n Phone " . $phone . "\n Email " . $email . "\n\n " . $message;
+							$headers = "From: ".$name;
+
+							if (mail($to, $subject, $body, $headers)) {
+								$msg = "Thank you! Your message has been sent.";
+							} else {
+								$msg = "Sorry, something went wrong. Please try again.";
+							}
+						} else {
+							$msg = "Please fill in all fields correctly.";
+						}
+					} else {
+						$msg = "Invalid request.";
+					}
+					?>
+					<h4 style="color: greenyellow; font-weight: bold;"><?php echo $msg; ?></h4>
+					<form action="contact.php" method="post">
+						<!-- <label for="name">Name:</label> -->
+						<input type="text" id="name" name="name" placeholder="Name" required>
+						<!-- <label for="email">Email:</label> -->
+						<input type="email" id="email" name="email" placeholder="Email" required>
+
+						<!-- <label for="phone">Phone:</label> -->
+						<input type="tel" id="phone" name="phone" placeholder="Phone" required>
+
+						<!-- <label for="message">Message:</label> -->
+						<textarea id="message" name="message" rows="4" placeholder="Message" required></textarea>
+
+						<button type="submit" name="submit" style="font-size: 1em;"><strong>Submit</strong></button>
+					</form>
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 
 
@@ -307,15 +308,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	<!-- FOOTER SECTION -->
 	<div class="footer" data-background="images/footer.jpg">
-		<div class="content-wrap"  style="background-color: #29176E;">
+		<div class="content-wrap" style="background-color: #29176E;">
 			<div class="container">
 
 				<div class="row">
 					<div class="col-sm-12 col-md-6 col-lg-3">
 						<div class="footer-item">
-							<img src="images/logo.jpg" style="height: 100px; width:100px;" alt="logo bottom" class="logo-bottom">
+							<img src="images/logo.jpg" style="height: 100px; width:100px;" alt="logo bottom"
+								class="logo-bottom">
 							<div class="spacer-30"></div>
-							<p><strong style="color: #FFF500;"> OUR MISSION:</strong><br><br>"To build and develop the child of today towards relevance and excellence through effective and efficient teaching."</p>
+							<p><strong style="color: #FFF500;"> OUR MISSION:</strong><br><br>"To build and develop the
+								child of today towards relevance and excellence through effective and efficient
+								teaching."</p>
 
 						</div>
 					</div>
@@ -330,7 +334,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 									<div class="info-icon">
 										<span class="fa fa-map-marker"></span>
 									</div>
-									<div class="info-text"> School Address: <br> 
+									<div class="info-text"> School Address: <br>
 										28, Chief Natufe street, Bode Thomas.
 									</div>
 								</li>
@@ -344,7 +348,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 									<div class="info-icon">
 										<span class="fa fa-envelope"></span>
 									</div>
-									<div class="info-text"><a href="mailto:honestyinternationalschool@gmail.com" title="" style="font-size: 13px; color: white;">honestyinternationalschool@gmail.com</a></div>
+									<div class="info-text"><a href="mailto:honestyinternationalschool@gmail.com"
+											title=""
+											style="font-size: 13px; color: white;">honestyinternationalschool@gmail.com</a>
+									</div>
 								</li>
 								<li>
 									<div class="info-icon">
@@ -395,12 +402,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</div>
 		</div>
 
-		<div class="fcopy"  style="background-color:#29176E;">
+		<div class="fcopy" style="background-color:#29176E;">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12 col-md-12">
-						<p class="ftex">Copyright 2024 &copy; <span class="color-primary">HONESTY International Schools</span>.
-							Designed by <span class="color-primary"> <a href="https://akisolutions.com.ng/" style="color: #FFF500;">AKI
+						<p class="ftex">Copyright 2024 &copy; <span class="color-primary">HONESTY International
+								Schools</span>.
+							Designed by <span class="color-primary"> <a href="https://akisolutions.com.ng/"
+									style="color: #FFF500;">AKI
 									Solutions </a></span></p>
 					</div>
 				</div>
@@ -424,6 +433,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-
-
-
